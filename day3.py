@@ -1,40 +1,42 @@
-data=open("s.txt").read().split(",")
+import numpy as np
 
-def parse(x):
-    sub=[]
-    for item in x:
-        sub.append(int(item))
-    dicts={}
-    for i in range(9):
-        amnt=sub.count(i)
-        dicts[i]=amnt
-    return dicts
+def parse():
+    data=open("data.txt").read().splitlines()
+    oneline=[]
+    everyline=[]
+    for item in data:
+        for num in item:
+            oneline.append(int(num))
+        everyline.append(oneline)
+        oneline=[]
+    parsed_data=np.array(everyline)
+    return parsed_data
 
-newdata=parse(data)
+#need to input str
+def bincon(binum):
+    n=len(binum)-1
+    num=0
+    for i in range(len(binum)-1,-1,-1,):
+        if binum[i]=="1":
+            num+=2**(n-i)
+    return num
 
-def answer(z):
-    for day in range(80):
-        dictd={}
-        values=[]
-        keys=[]
-        special=0
-        for key, value in z.item():
-            if key == 0:
-                keys.append(0)
-                value.append(z[0])
-                print(keys)
-                special+=int(z[0])
-            elif key == 7:
-                special+=int(z[7])
-            else:
-                keys.append(key)
-                values.append(key[value])
-        dictd=dict(zip(keys,values)
-        dictd[6]=special
-        final=0
-    for key, value in z:
-        final+=int(key[value])
-    return final
+#only need to calc gamma, epsilon is opposite at every interval
+
+def part1():
+    np_data=parse()
+    col_sums=np_data.sum(axis=0)
+    length=np_data.shape
+    epsilon=""
+    gamma=""
+    for item in col_sums:
+        if item < int(length[0])//2:
+            gamma+="0"
+            epsilon+="1"
+        else:
+            gamma+="1"
+            epsilon+="0"
+    return bincon(gamma)*bincon(epsilon)
 
 
-print(answer(newdata))
+print(part1())
